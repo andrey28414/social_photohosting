@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-publications
+spec:
+  selector:
+    app: service-publications
+  type: NodePort
+  ports:
+    - name: http
+      port: 8081
+      nodePort: 30001
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-publications
+spec:
+  selector:
+    matchLabels:
+      app: service-publications
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-publications
+    spec:
+      containers:
+        - name: server
+          image: 123456677/service-publications:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8081

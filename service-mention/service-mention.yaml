@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-mention
+spec:
+  selector:
+    app: service-mention
+  type: NodePort
+  ports:
+    - name: http
+      port: 8082
+      nodePort: 30002
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-mention
+spec:
+  selector:
+    matchLabels:
+      app: service-mention
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-mention
+    spec:
+      containers:
+        - name: server
+          image: 123456677/service-mention:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8082
